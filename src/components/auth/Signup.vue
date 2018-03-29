@@ -18,7 +18,7 @@
 <script>
     export default {
         name: "signup",
-        data () {
+        data: () => {
             return {
                 user: {
                     username: null,
@@ -29,17 +29,11 @@
         },
         methods: {
             signup: function () {
-                this.$http.post('http://localhost:9090/users', this.user)
-                    .then(function (res) {
+                this.$http.post('/users', this.user)
+                    .then((res) => {
                         alertify.success('Success! You can now log in with your credentials');
                         this.$router.push('/auth/login');
-                    }).catch( function (res) {
-                        if (res.status == 422) {
-                            res.body.errors.forEach(function (e) {
-                                alertify.error(e)
-                            })
-                        }
-                })
+                    })
             }
         }
     }

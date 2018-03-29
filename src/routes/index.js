@@ -16,11 +16,13 @@ var router = new VueRouter({
             children: [
                 {
                     path: 'login',
-                    component: Login
+                    component: Login,
+                    meta: { requiresGuest: true }
                 },
                 {
                     path: 'signup',
-                    component: Signup
+                    component: Signup,
+                    meta: { requiresGuest: true }
                 }
             ]
         }
