@@ -19,7 +19,7 @@ Vue.http.interceptors.push((request, next) => {
 
         var token = Vue.auth.getToken()
         if (token) {
-            request.header.set('Authorization', 'Bearer ' + token)
+            request.headers.set('Authorization', 'Bearer ' + token)
         }
     }
     next((response) => {
@@ -36,9 +36,16 @@ Router.beforeEach((to, from, next) => {
     // prevent access to 'requiresGuest routes
     if (to.matched.some((record) => { return record.meta.requiresGuest }) && Vue.auth.loggedIn()) {
         next({
-            path: '/newsfeed'
+            path: '/feed'
         })
-    } else {
+    }
+    else if (to.matched.some((record) => { return record.meta.requiresAuth }) && !Vue.auth.loggedIn()) {
+        next({
+            path: '/auth/login',
+            query: { redirect: to.fullPath }
+        })
+    }
+    else {
         next()
     }
 })

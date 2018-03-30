@@ -28,7 +28,7 @@
                 this.$http.post('/auth', this.user)
                     .then((res) => {
                         this.$auth.setToken(res.body.token, Date.now() + 1440000)
-                        this.$router.push('/newsfeed')
+                        this.$router.push('/feed')
                     })
             }
         }
