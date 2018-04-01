@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="yellWrapper">
-            <yell v-for="yell in yells" :key="yell.id" :yell="yell"></yell>
+            <yell v-for="yell in yells" :key="yell.id" :yell="yell" :showUserInfo="showUserInfo"></yell>
         </div>
         <div id="yellsLoading" class="text-center" v-show="yellsLoading">
             <br>
@@ -15,6 +15,10 @@
 
     export default {
         name: 'YellList',
+        props: {
+            endpoint: { type: String, default: "/beeps"},
+            showUserInfo: { type: Boolean, default: true }
+        },
         components: {
             yell: Yell,
         },
@@ -34,10 +38,16 @@
                 yellsLoading: false
             }
         },
+        watch: {
+            endpoint () {
+                this.yells = []
+                this.getYells()
+            }
+        },
         methods: {
             getYells (page) {
                 this.yellsLoading = true
-                this.$http.get('/beeps?page=' + page)
+                this.$http.get(this.endpoint + '?page=' + page)
                     .then(function (res) {
                         this.yells = this.yells.concat(res.body.data)
                         this.page = { current: res.body.current_page, last: res.body.last_page }

@@ -1,14 +1,14 @@
 <template>
     <div class="yell">
         <div class="row">
-            <div class="col-sm-2 text-center">
+            <div class="col-sm-2 text-center" v-show="showUserInfo">
                 <router-link :to="'/profile/'+yell.author.username">
                     <img :src="yell.author.avatar" class="yell-img rounded img-thumbnail">
                 </router-link>
             </div>
             <div class="col-sm-10">
-                <router-link :to="'/profile/'+yell.author.username">@{{yell.author.username}}</router-link>
-                <small class="text-muted">said:<br><br></small>
+                <router-link :to="'/profile/'+yell.author.username" v-show="showUserInfo">@{{yell.author.username}}</router-link>
+                <small class="text-muted" v-show="showUserInfo">said:<br><br></small>
                 <p :class="{
                     small: yell.text.length >= 150,
                     medium: yell.text.length <150 && yell.text.length > 50,
@@ -38,9 +38,16 @@
 
     export default {
         name: 'yell',
-        props: {yell:{}},
+        props: {
+            yell:{},
+            showUserInfo: { type: Boolean, default: true }
+        },
         methods: {
-            likeYell: function () {
+            likeYell () {
+                if (!this.$auth.loggedIn()) {
+                    alertify.error("You need to login to like it")
+                    return
+                }
                 this.$http.patch('/beeps/' + this.yell.id + '/like')
                     .then(function (res) {
                         if (this.yell.liked) {
