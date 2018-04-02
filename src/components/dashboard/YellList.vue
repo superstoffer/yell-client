@@ -27,6 +27,7 @@
             this.getYells(1)
 
             window.addEventListener('scroll', this.handleScroll)
+            this.$root.$on('newYell', this.handleNewYell)
         },
         destroyed () {
             window.removeEventListener('scroll', this.handleScroll)
@@ -63,6 +64,10 @@
                         this.getYells(this.page.current+1)
                     }
                 }
+            },
+            handleNewYell (yell) {
+                if (!this.$route.params.username || this.$route.params.username === yell.author.username)
+                    this.yells.unshift(yell)
             }
         }
     }

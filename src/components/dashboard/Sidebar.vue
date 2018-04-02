@@ -23,7 +23,7 @@
             </textarea>
                     <p class="text-muted">{{ 320 - newYell.length }} character{{ 320 - newYell.length == 1 ? '' : 's' }} left</p>
                     <p class="text-center no-margin">
-                        <button class="btn btn-info btn-block btn-lg">Yell now</button>
+                        <button class="btn btn-info btn-block btn-lg" @click="yell">Yell now</button>
                     </p>
                 </div>
             </div>
@@ -57,28 +57,32 @@
     export default {
         name: 'sidebar',
         created () {
-            if (this.loggedIn) {
-                this.getUser()
-            }
+
         },
         data () {
             return {
-                user: {},
                 newYell: '',
                 loggedIn: this.$auth.loggedIn()
             }
         },
+        computed: {
+            user () {
+                return this.$store.state.currentUser
+            }
+        },
         methods: {
+            yell () {
+                this.$http.post('/beeps', { text: this.newYell })
+                    .then(function (res) {
+                        this.$root.$emit('newYell', res.data)
+                        this.newYell = ''
+                        alertify.success('You yelled, tiger')
+                    })
+            },
             logout () {
                 this.$auth.destroyToken()
                 this.user = {}
                 this.$router.push('/auth/login')
-            },
-            getUser () {
-                this.$http.get('/users/me')
-                    .then(function (res) {
-                        this.user = res.body
-                    })
             }
         }
     }
