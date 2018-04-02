@@ -23,19 +23,19 @@
             </textarea>
                     <p class="text-muted">{{ 320 - newYell.length }} character{{ 320 - newYell.length == 1 ? '' : 's' }} left</p>
                     <p class="text-center no-margin">
-                        <button class="btn btn-info btn-block">Yell now</button>
+                        <button class="btn btn-info btn-block btn-lg">Yell now</button>
                     </p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
                     <p class="text-center no-margin">
-                        <a href="#" class="btn btn-block btn-light"><i class="fa fa-cog"></i> Settings</a>
+                        <router-link :to="'/settings'" class="btn btn-light"><i class="fa fa-cog"></i> Settings</router-link>
                     </p>
                 </div>
                 <div class="col-sm-6">
                     <p class="text-center no-margin">
-                        <a href="#" class="btn btn-block btn-light" @click.prevent="logout">
+                        <a href="#" class="btn btn-light" @click.prevent="logout">
                             <i class="fa fa-power-off"></i> Log out
                         </a>
                     </p>
