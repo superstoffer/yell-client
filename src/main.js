@@ -15,7 +15,7 @@ Vue.config.productionTip = false
 alertify.defaults.notifier.position = 'top-right'
 
 Vue.http.interceptors.push((request, next) => {
-    if (request.url[0] === '/' ) {
+    if (request.url[0] === '/') {
         request.url = process.env.API + request.url
 
         var token = Vue.auth.getToken()
